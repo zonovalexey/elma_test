@@ -20,7 +20,7 @@ func gen_mass(user_settings settings) []int {
 	if user_settings.user_params == 0 {
 		mass_size = generator.Intn(user_settings.mass_size / 2)
 	}
-	mass := make([]int, 0, user_settings.mass_size)
+	mass := make([]int, 0, user_settings.mass_size+1)
 	for i := 0; i < mass_size; i++ {
 		num := generator.Intn(user_settings.el_size) + 1
 		mass = append(mass, num)
