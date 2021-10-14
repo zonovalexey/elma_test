@@ -18,7 +18,7 @@ type settings struct {
 
 func solution(A []int, K int) []int {
 	if K > len(A) {
-		K = len(A) % K
+		K = K % len(A)
 	}
 	if K < len(A) && K > 0 {
 		mass1 := A[:(len(A) - K)]
