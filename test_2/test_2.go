@@ -8,29 +8,25 @@ import (
 )
 
 type settings struct {
-	user_params, mass_on, mass_size, number_size int
+	user_params, mass_on, mass_size, el_size int
 }
 
-var a = 1000000
-var n = 1000000000
+const default_mass_size = 1000000
+const default_el_size = 1000000000
 
-const aa = 1000000
-const nn = 1000000000
-
-func gen_mass(mass_size int) []int {
-	mass := make([]int, 0, a)
+func gen_mass(user_settings settings) []int {
 	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
-	if mass_size == 0 {
-		mass_size = generator.Intn(a / 2)
-	} else {
-		mass_size /= 2
+	mass_size := user_settings.mass_size / 2
+	if user_settings.user_params == 0 {
+		mass_size = generator.Intn(user_settings.mass_size / 2)
 	}
+	mass := make([]int, 0, user_settings.mass_size)
 	for i := 0; i < mass_size; i++ {
-		num := generator.Intn(n) + 1
+		num := generator.Intn(user_settings.el_size) + 1
 		mass = append(mass, num)
 		mass = append(mass, num)
 	}
-	mass = append(mass, generator.Intn(n)+1)
+	mass = append(mass, generator.Intn(user_settings.el_size)+1)
 	return mass
 }
 
@@ -68,17 +64,17 @@ func solution(mass []int) int {
 
 func TaskSolution() {
 	user_settings := user_hello()
-	if user_settings.user_params == 1 {
-		a = user_settings.mass_size
-		n = user_settings.number_size
+	if user_settings.user_params == 0 {
+		user_settings.mass_size = default_mass_size
+		user_settings.el_size = default_el_size
 	}
 	start := time.Now()
-	mass := unsort_mass(gen_mass(user_settings.mass_size))
+	mass := unsort_mass(gen_mass(user_settings))
 	duration := time.Since(start)
 	if user_settings.mass_on == 1 {
-		fmt.Printf("Исходный массив:\n%v\n", mass)
+		fmt.Println("Исходный массив:\n", mass)
 	}
-	fmt.Println("\nВремя создания массива размером", len(mass), "элементов:", duration)
+	fmt.Println("Время создания массива размером", len(mass), "элементов:", duration)
 	start = time.Now()
 	lonely := solution(mass)
 	duration = time.Since(start)
@@ -92,7 +88,7 @@ func user_hello() settings {
 	user_settings.user_params = 0
 	user_settings.mass_on = 0
 	user_settings.mass_size = 0
-	user_settings.number_size = 0
+	user_settings.el_size = 0
 
 	for user_params != "y" && user_params != "Y" && user_params != "n" && user_params != "N" {
 		fmt.Printf("\nЗадать параметры вручную (y/n)? ")
@@ -125,19 +121,19 @@ func user_hello() settings {
 	}
 
 	if user_settings.user_params == 1 {
-		for user_settings.mass_size < 3 || user_settings.mass_size > aa {
-			fmt.Printf("\nВведите размер массива (3 - %v)? ", aa)
+		for user_settings.mass_size < 3 || user_settings.mass_size > default_mass_size {
+			fmt.Printf("\nВведите размер массива (3 - %v)? ", default_mass_size)
 			fmt.Scanf("%d\n", &user_settings.mass_size)
-			if user_settings.mass_size < 3 || user_settings.mass_size > aa {
-				fmt.Println("\nРазмер массива должен быть в пределах от 3 до", aa)
+			if user_settings.mass_size < 3 || user_settings.mass_size > default_mass_size {
+				fmt.Println("\nРазмер массива должен быть в пределах от 3 до", default_mass_size)
 			}
 		}
 
-		for user_settings.number_size < 1 || user_settings.number_size > nn {
-			fmt.Printf("\nВведите максимальный размер элемента массива (1 - %v)? ", nn)
-			fmt.Scanf("%d\n", &user_settings.number_size)
-			if user_settings.number_size < 3 || user_settings.number_size > nn {
-				fmt.Println("\nРазмер элемента массива должен быть в пределах от 1 до", nn)
+		for user_settings.el_size < 1 || user_settings.el_size > default_el_size {
+			fmt.Printf("\nВведите максимальный размер элемента массива (1 - %v)? ", default_el_size)
+			fmt.Scanf("%d\n", &user_settings.el_size)
+			if user_settings.el_size < 3 || user_settings.el_size > default_el_size {
+				fmt.Println("\nРазмер элемента массива должен быть в пределах от 1 до", default_el_size)
 			}
 		}
 	}
