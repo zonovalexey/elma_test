@@ -2,49 +2,39 @@ package main
 
 import (
 	"fmt"
-	"time"
-
+	"tasks/test_1"
 	"tasks/test_2"
 )
 
 func select_work() int {
-	work := 0
-	for work != 1 && work != 2 {
-		fmt.Printf("\nВыберите задачу (1 - Циклическая ротация, 2 - Чудные вхождения в массив): ")
+	work := -1
+	for !(work >= 0 && work <= 2) {
+		fmt.Printf("\nВыберите задачу (1 - Циклическая ротация, 2 - Чудные вхождения в массив, 0 - выход): ")
 		fmt.Scanf("%d\n", &work)
-		if work != 1 && work != 2 {
-			fmt.Println("\nВведите 1 или 2")
+		if !(work >= 0 && work <= 2) {
+			fmt.Println("\nВведите 0, 1 или 2")
 		}
 	}
 	return work
 }
 
 func main() {
-	selected_work := select_work()
-	switch selected_work {
-	case 1:
-		{
-			fmt.Println("Не сделана ")
-		}
-	case 2:
-		{
-			user_settings := test_2.User_hello()
-			if user_settings.User_params == 1 {
-				test_2.A = user_settings.Mass_size
-				test_2.N = user_settings.Number_size
+	selected_work := -1
+	for selected_work != 0 {
+		selected_work = select_work()
+		switch selected_work {
+		case 0:
+			{
+				return
 			}
-			start := time.Now()
-			mass := test_2.Unsort_mass(test_2.Gen_mass())
-			duration := time.Since(start)
-			if user_settings.Mass_on == 1 {
-				fmt.Printf("Исходный массив:\n%v\n", mass)
+		case 1:
+			{
+				test_1.TaskSolution()
 			}
-			fmt.Println("\nВремя создания массива размером", len(mass), "элементов:", duration)
-			start = time.Now()
-			lonely := test_2.Find_lonely(mass)
-			duration = time.Since(start)
-			fmt.Printf("Элемент %v с индексом %v не имеет пары\n", mass[lonely], lonely)
-			fmt.Println("Время поиска элемента:", duration)
+		case 2:
+			{
+				test_2.TaskSolution()
+			}
 		}
 	}
 }
