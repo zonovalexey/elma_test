@@ -7,7 +7,10 @@ import (
 	"time"
 )
 
-func solution4(A []int) int {
+var user_settings4 generators.Task_4
+
+func solution4(t generators.Task_4) int {
+	A := t.Mass
 	temp_mass := make([]int, len(A))
 	copy(temp_mass, A)
 	sort.Ints(temp_mass)
@@ -20,16 +23,17 @@ func solution4(A []int) int {
 }
 
 func TaskSolution4() {
-	user_settings := user_hello4()
-	start := time.SetSettings()
-	mass := user_settings.Generator()
+	user_settings4.SetSettings()
+	user_hello4(&user_settings4)
+	start := time.Now()
+	user_settings4.Mass = user_settings4.Generator()
 	duration := time.Since(start)
-	if user_settings.Mass_on == 1 {
-		fmt.Println("Исходный массив:", mass)
+	if user_settings4.Mass_on == 1 {
+		fmt.Println("Исходный массив:", user_settings4.Mass)
 	}
-	fmt.Println("Время создания массива размером", len(mass), "элементов:", duration)
+	fmt.Println("Время создания массива размером", len(user_settings4.Mass), "элементов:", duration)
 	start = time.Now()
-	res := solution4(mass)
+	res := solution4(user_settings4)
 	duration = time.Since(start)
 	switch res {
 	case 0:
@@ -44,26 +48,22 @@ func TaskSolution4() {
 	fmt.Println("Время поиска элемента:", duration)
 }
 
-func user_hello4() generators.Task_4 {
-	var user_settings generators.Task_4
+func user_hello4(t *generators.Task_4) *generators.Task_4 {
 	var mass_on string
-	user_settings.Mass_size = 0
-	user_settings.Mass_on = 0
-	user_settings.El_size = 0
 
-	for user_settings.Mass_size < 1 || user_settings.Mass_size > user_settings.Default_mass_size {
-		fmt.Printf("\nВведите размер массива (1 - %v)? ", user_settings.Default_mass_size)
-		fmt.Scanf("%d\n", &user_settings.Mass_size)
-		if user_settings.Mass_size < 1 || user_settings.Mass_size > user_settings.Default_mass_size {
-			fmt.Println("\nРазмер массива должен быть в пределах от 1 до", user_settings.Default_mass_size)
+	for t.Mass_size < 1 || t.Mass_size > t.Default_mass_size {
+		fmt.Printf("\nВведите размер массива (1 - %v)? ", t.Default_mass_size)
+		fmt.Scanf("%d\n", &t.Mass_size)
+		if t.Mass_size < 1 || t.Mass_size > t.Default_mass_size {
+			fmt.Println("\nРазмер массива должен быть в пределах от 1 до", t.Default_mass_size)
 		}
 	}
 
-	for user_settings.El_size < user_settings.Mass_size || user_settings.El_size > user_settings.Default_el_size {
-		fmt.Printf("\nВведите максимальный размер элемента массива (%v - %v)? ", user_settings.Mass_size, user_settings.Default_el_size)
-		fmt.Scanf("%d\n", &user_settings.El_size)
-		if user_settings.El_size < user_settings.Mass_size || user_settings.El_size > user_settings.Default_el_size {
-			fmt.Println("\nРазмер элемента массива должен быть в пределах от", user_settings.Mass_size, "до", user_settings.Default_el_size)
+	for t.El_size < t.Mass_size || t.El_size > t.Default_el_size {
+		fmt.Printf("\nВведите максимальный размер элемента массива (%v - %v)? ", t.Mass_size, t.Default_el_size)
+		fmt.Scanf("%d\n", &t.El_size)
+		if t.El_size < t.Mass_size || t.El_size > t.Default_el_size {
+			fmt.Println("\nРазмер элемента массива должен быть в пределах от", t.Mass_size, "до", t.Default_el_size)
 		}
 	}
 
@@ -74,12 +74,12 @@ func user_hello4() generators.Task_4 {
 			fmt.Println("\nВаш ответ должен быть y или n")
 		} else {
 			if mass_on == "y" || mass_on == "Y" {
-				user_settings.Mass_on = 1
+				t.Mass_on = 1
 			}
 			if mass_on == "n" || mass_on == "N" {
-				user_settings.Mass_on = 0
+				t.Mass_on = 0
 			}
 		}
 	}
-	return user_settings
+	return t
 }

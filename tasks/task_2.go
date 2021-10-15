@@ -7,10 +7,12 @@ import (
 	"time"
 )
 
-func solution2(mass []int) int {
-	lonely := len(mass) - 1
-	temp_mass := make([]int, len(mass))
-	copy(temp_mass, mass)
+var user_settings2 generators.Task_2
+
+func solution2(t generators.Task_2) int {
+	lonely := len(t.Mass) - 1
+	temp_mass := make([]int, len(t.Mass))
+	copy(temp_mass, t.Mass)
 	sort.Ints(temp_mass)
 	for i := 0; i < len(temp_mass)-2; i += 2 {
 		if temp_mass[i] != temp_mass[i+1] {
@@ -18,7 +20,7 @@ func solution2(mass []int) int {
 			break
 		}
 	}
-	for i, v := range mass {
+	for i, v := range t.Mass {
 		if v == temp_mass[lonely] {
 			return i
 		}
@@ -27,35 +29,28 @@ func solution2(mass []int) int {
 }
 
 func TaskSolution2() {
-	user_settings := user_hello2()
-	if user_settings.User_params == 0 {
-		user_settings.Mass_size = user_settings.Default_mass_size
-		user_settings.El_size = user_settings.Default_el_size
+	user_settings2.SetSettings()
+	user_hello2(&user_settings2)
+	if user_settings2.User_params == 0 {
+		user_settings2.Mass_size = user_settings2.Default_mass_size
+		user_settings2.El_size = user_settings2.Default_el_size
 	}
 	start := time.Now()
-	/*
-		var user_settings generators.Task_2
-		user_settings.Mass_size = 20
-		user_settings.El_size = 100
-		user_settings.Mass_on = 1
-		user_settings.User_params = 1
-	*/
-	mass := user_settings.Generator()
+
+	user_settings2.Mass = user_settings2.Generator()
 	duration := time.Since(start)
-	if user_settings.Mass_on == 1 {
-		fmt.Println("Исходный массив:\n", mass)
+	if user_settings2.Mass_on == 1 {
+		fmt.Println("Исходный массив:\n", user_settings2.Mass)
 	}
-	fmt.Println("Время создания массива размером", len(mass), "элементов:", duration)
+	fmt.Println("Время создания массива размером", len(user_settings2.Mass), "элементов:", duration)
 	start = time.Now()
-	lonely := solution2(mass)
+	lonely := solution2(user_settings2)
 	duration = time.Since(start)
-	fmt.Printf("Элемент %v с индексом %v не имеет пары\n", mass[lonely], lonely)
+	fmt.Printf("Элемент %v с индексом %v не имеет пары\n", user_settings2.Mass[lonely], lonely)
 	fmt.Println("Время поиска элемента:", duration)
 }
 
-func user_hello2() generators.Task_2 {
-	var user_settings generators.Task_2
-	user_settings.SetSettings()
+func user_hello2(t *generators.Task_2) *generators.Task_2 {
 	var user_params, mass_on string
 
 	for user_params != "y" && user_params != "Y" && user_params != "n" && user_params != "N" {
@@ -65,10 +60,10 @@ func user_hello2() generators.Task_2 {
 			fmt.Println("\nВаш ответ должен быть y или n")
 		} else {
 			if user_params == "y" || user_params == "Y" {
-				user_settings.User_params = 1
+				t.User_params = 1
 			}
 			if user_params == "n" || user_params == "N" {
-				user_settings.User_params = 0
+				t.User_params = 0
 			}
 		}
 	}
@@ -80,30 +75,30 @@ func user_hello2() generators.Task_2 {
 			fmt.Println("\nВаш ответ должен быть y или n")
 		} else {
 			if mass_on == "y" || mass_on == "Y" {
-				user_settings.Mass_on = 1
+				t.Mass_on = 1
 			}
 			if mass_on == "n" || mass_on == "N" {
-				user_settings.Mass_on = 0
+				t.Mass_on = 0
 			}
 		}
 	}
 
-	if user_settings.User_params == 1 {
-		for user_settings.Mass_size < 3 || user_settings.Mass_size > user_settings.Default_mass_size {
-			fmt.Printf("\nВведите размер массива (3 - %v)? ", user_settings.Default_mass_size)
-			fmt.Scanf("%d\n", &user_settings.Mass_size)
-			if user_settings.Mass_size < 3 || user_settings.Mass_size > user_settings.Default_mass_size {
-				fmt.Println("\nРазмер массива должен быть в пределах от 3 до", user_settings.Default_mass_size)
+	if t.User_params == 1 {
+		for t.Mass_size < 3 || t.Mass_size > t.Default_mass_size {
+			fmt.Printf("\nВведите размер массива (3 - %v)? ", t.Default_mass_size)
+			fmt.Scanf("%d\n", &t.Mass_size)
+			if t.Mass_size < 3 || t.Mass_size > t.Default_mass_size {
+				fmt.Println("\nРазмер массива должен быть в пределах от 3 до", t.Default_mass_size)
 			}
 		}
 
-		for user_settings.El_size < 1 || user_settings.El_size > user_settings.Default_el_size {
-			fmt.Printf("\nВведите максимальный размер элемента массива (1 - %v)? ", user_settings.Default_el_size)
-			fmt.Scanf("%d\n", &user_settings.El_size)
-			if user_settings.El_size < 3 || user_settings.El_size > user_settings.Default_el_size {
-				fmt.Println("\nРазмер элемента массива должен быть в пределах от 1 до", user_settings.Default_el_size)
+		for t.El_size < 1 || t.El_size > t.Default_el_size {
+			fmt.Printf("\nВведите максимальный размер элемента массива (1 - %v)? ", t.Default_el_size)
+			fmt.Scanf("%d\n", &t.El_size)
+			if t.El_size < 3 || t.El_size > t.Default_el_size {
+				fmt.Println("\nРазмер элемента массива должен быть в пределах от 1 до", t.Default_el_size)
 			}
 		}
 	}
-	return user_settings
+	return t
 }

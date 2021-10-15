@@ -7,7 +7,10 @@ import (
 	"time"
 )
 
-func solution3(A []int) int {
+var user_settings3 generators.Task_3
+
+func solution3(t generators.Task_3) int {
+	A := t.Mass
 	temp_mass := make([]int, len(A))
 	copy(temp_mass, A)
 	sort.Ints(temp_mass)
@@ -27,16 +30,17 @@ func solution3(A []int) int {
 }
 
 func TaskSolution3() {
-	user_settings := user_hello3()
-	start := time.SetSettings()
-	mass := user_settings.Generator()
+	user_settings3.SetSettings()
+	user_hello3(&user_settings3)
+	start := time.Now()
+	user_settings3.Mass = user_settings3.Generator()
 	duration := time.Since(start)
-	if user_settings.Mass_on == 1 {
-		fmt.Println("Исходный массив:\n", mass)
+	if user_settings3.Mass_on == 1 {
+		fmt.Println("Исходный массив:\n", user_settings3.Mass)
 	}
-	fmt.Println("Время создания массива размером", len(mass), "элементов:", duration)
+	fmt.Println("Время создания массива размером", len(user_settings3.Mass), "элементов:", duration)
 	start = time.Now()
-	res := solution3(mass)
+	res := solution3(user_settings3)
 	duration = time.Since(start)
 	if res != -1 {
 		fmt.Println("Отсутствующий элемент массива:", res)
@@ -46,17 +50,14 @@ func TaskSolution3() {
 	fmt.Println("Время поиска элемента:", duration)
 }
 
-func user_hello3() generators.Task_3 {
-	var user_settings generators.Task_3
+func user_hello3(t *generators.Task_3) *generators.Task_3 {
 	var mass_on string
-	user_settings.Mass_size = 0
-	user_settings.Mass_on = 0
 
-	for user_settings.Mass_size < 1 || user_settings.Mass_size > user_settings.Default_mass_size {
-		fmt.Printf("\nВведите размер массива (1 - %v)? ", user_settings.Default_mass_size)
-		fmt.Scanf("%d\n", &user_settings.Mass_size)
-		if user_settings.Mass_size < 1 || user_settings.Mass_size > user_settings.Default_mass_size {
-			fmt.Println("\nРазмер массива должен быть в пределах от 1 до", user_settings.Default_mass_size)
+	for t.Mass_size < 1 || t.Mass_size > t.Default_mass_size {
+		fmt.Printf("\nВведите размер массива (1 - %v)? ", t.Default_mass_size)
+		fmt.Scanf("%d\n", &t.Mass_size)
+		if t.Mass_size < 1 || t.Mass_size > t.Default_mass_size {
+			fmt.Println("\nРазмер массива должен быть в пределах от 1 до", t.Default_mass_size)
 		}
 	}
 
@@ -67,12 +68,12 @@ func user_hello3() generators.Task_3 {
 			fmt.Println("\nВаш ответ должен быть y или n")
 		} else {
 			if mass_on == "y" || mass_on == "Y" {
-				user_settings.Mass_on = 1
+				t.Mass_on = 1
 			}
 			if mass_on == "n" || mass_on == "N" {
-				user_settings.Mass_on = 0
+				t.Mass_on = 0
 			}
 		}
 	}
-	return user_settings
+	return t
 }
