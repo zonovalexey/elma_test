@@ -20,8 +20,8 @@ func solution4(A []int) int {
 }
 
 func TaskSolution4() {
-	user_settings := user_hello()
-	start := time.Now()
+	user_settings := user_hello4()
+	start := time.SetSettings()
 	mass := user_settings.Generator()
 	duration := time.Since(start)
 	if user_settings.Mass_on == 1 {
@@ -29,7 +29,7 @@ func TaskSolution4() {
 	}
 	fmt.Println("Время создания массива размером", len(mass), "элементов:", duration)
 	start = time.Now()
-	res := solution(mass)
+	res := solution4(mass)
 	duration = time.Since(start)
 	switch res {
 	case 0:
@@ -51,19 +51,19 @@ func user_hello4() generators.Task_4 {
 	user_settings.Mass_on = 0
 	user_settings.El_size = 0
 
-	for user_settings.Mass_size < 1 || user_settings.Mass_size > default_mass_size {
-		fmt.Printf("\nВведите размер массива (1 - %v)? ", default_mass_size)
+	for user_settings.Mass_size < 1 || user_settings.Mass_size > user_settings.Default_mass_size {
+		fmt.Printf("\nВведите размер массива (1 - %v)? ", user_settings.Default_mass_size)
 		fmt.Scanf("%d\n", &user_settings.Mass_size)
-		if user_settings.Mass_size < 1 || user_settings.Mass_size > default_mass_size {
-			fmt.Println("\nРазмер массива должен быть в пределах от 1 до", default_mass_size)
+		if user_settings.Mass_size < 1 || user_settings.Mass_size > user_settings.Default_mass_size {
+			fmt.Println("\nРазмер массива должен быть в пределах от 1 до", user_settings.Default_mass_size)
 		}
 	}
 
-	for user_settings.El_size < user_settings.Mass_size || user_settings.El_size > default_el_size {
-		fmt.Printf("\nВведите максимальный размер элемента массива (%v - %v)? ", user_settings.Mass_size, default_el_size)
+	for user_settings.El_size < user_settings.Mass_size || user_settings.El_size > user_settings.Default_el_size {
+		fmt.Printf("\nВведите максимальный размер элемента массива (%v - %v)? ", user_settings.Mass_size, user_settings.Default_el_size)
 		fmt.Scanf("%d\n", &user_settings.El_size)
-		if user_settings.El_size < user_settings.Mass_size || user_settings.El_size > default_el_size {
-			fmt.Println("\nРазмер элемента массива должен быть в пределах от", user_settings.Mass_size, "до", default_el_size)
+		if user_settings.El_size < user_settings.Mass_size || user_settings.El_size > user_settings.Default_el_size {
+			fmt.Println("\nРазмер элемента массива должен быть в пределах от", user_settings.Mass_size, "до", user_settings.Default_el_size)
 		}
 	}
 
