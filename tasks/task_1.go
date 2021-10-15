@@ -8,10 +8,13 @@ import (
 )
 
 var user_settings settings.Task_1
-user_settings.Now()
+user_settings.SetSettings()
 
 
-func Solution1(A []int, K int) []int {
+
+func (t user_settings) Solution1() []int {
+	A := t.Mass
+	K := t.User_shift
 	if K > len(A) {
 		K = K % len(A)
 	}
@@ -39,7 +42,7 @@ func TaskSolution1() {
 	fmt.Println("Время смещения массива:", duration)
 }
 
-func (t generators.Task_2) user_hello() generators.Task_1 {
+func (t Task_1) user_hello() Task_1 {
 
 	for t.Mass_size < 1 || t.Mass_size > default_mass_size {
 		fmt.Printf("\nВведите размер массива (1 - %v)? ", t.Default_mass_size)
