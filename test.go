@@ -2,10 +2,7 @@ package main
 
 import (
 	"fmt"
-	"tasks/test_1"
-	"tasks/test_2"
-	"tasks/test_3"
-	"tasks/test_4"
+	"tasks/tasks"
 )
 
 func select_work() int {
@@ -36,19 +33,19 @@ func main() {
 			}
 		case 1:
 			{
-				test_1.TaskSolution()
+				tasks.TaskSolution1()
 			}
 		case 2:
 			{
-				test_2.TaskSolution()
+				tasks.TaskSolution2()
 			}
 		case 3:
 			{
-				test_3.TaskSolution()
+				tasks.TaskSolution3()
 			}
 		case 4:
 			{
-				test_4.TaskSolution()
+				tasks.TaskSolution4()
 			}
 		}
 	}
