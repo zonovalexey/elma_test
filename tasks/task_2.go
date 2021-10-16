@@ -28,6 +28,39 @@ func solution2(t generators.Task_2) int {
 	return -1
 }
 
+func solution2a(t generators.Task_2) int {
+	lonely := 0
+
+	for i, v := range t.Mass {
+		lonely = 0
+		for i2, v2 := range t.Mass {
+			if v == v2 && i != i2 {
+				lonely = 1
+				break
+			}
+		}
+		if lonely == 0 {
+			return i
+		}
+	}
+	return -1
+}
+
+func solution2b(t generators.Task_2) int {
+	var m = make(map[int]int, len(t.Mass))
+
+	for _, v := range t.Mass {
+		m[v]++
+	}
+
+	for i, v := range m {
+		if v%2 == 1 {
+			return i
+		}
+	}
+	return -1
+}
+
 func TaskSolution2() {
 	user_settings2.SetSettings()
 	user_hello2(&user_settings2)
@@ -48,10 +81,27 @@ func TaskSolution2() {
 	duration = time.Since(start)
 	fmt.Printf("Элемент %v с индексом %v не имеет пары\n", user_settings2.Mass[lonely], lonely)
 	fmt.Println("Время поиска элемента:", duration)
+	start = time.Now()
+	lonely = solution2a(user_settings2)
+	duration = time.Since(start)
+	fmt.Printf("Элемент %v с индексом %v не имеет пары\n", user_settings2.Mass[lonely], lonely)
+	fmt.Println("Время поиска элемента:", duration)
+	start = time.Now()
+	lonely2 := solution2b(user_settings2)
+	duration = time.Since(start)
+	fmt.Printf("Элемент %v не имеет пары\n", lonely2)
+	fmt.Println("Время поиска элемента:", duration)
 }
 
 func user_hello2(t *generators.Task_2) *generators.Task_2 {
 	var user_params, mass_on string
+
+	user_params = "y"
+	mass_on = "y"
+	t.El_size = 1000000000
+	t.Mass_on = 0
+	t.Mass_size = 100000
+	t.User_params = 1
 
 	for user_params != "y" && user_params != "Y" && user_params != "n" && user_params != "N" {
 		fmt.Printf("\nЗадать параметры вручную (y/n)? ")

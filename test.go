@@ -23,6 +23,15 @@ func select_work() int {
 }
 
 func main() {
+
+	// var Tasks []generators.Task
+
+	// for i, v := range Tasks {
+	// 	go fu
+	// 	v.SetSettings(g)
+	// 	v.Solution()
+	// }
+	tasks.TaskSolution2()
 	selected_work := -1
 	for selected_work != 0 {
 		selected_work = select_work()

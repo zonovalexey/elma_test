@@ -26,3 +26,24 @@ func (t Task_1) Generator() []int {
 	}
 	return mass
 }
+
+// type Generator interface {
+// 	Generator() []int
+// }
+
+// type Task interface {
+// 	Solution() int
+// 	SetSettings(Generator)
+// }
+
+// type Task123 struct {
+// 	gen Generator
+// }
+
+// func (t Task123) Solution() int {
+// 	return 1
+// }
+
+// func (t Task123) SetSettings(g Generator) {
+// 	g.Generator()
+// }
