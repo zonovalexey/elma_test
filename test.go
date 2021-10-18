@@ -17,11 +17,11 @@ func main() {
 
 	c := make(chan int)
 
-	for i := 0; i < 10; i++ {
-		go solutions.Task(TaskName, 1, user_name, c)
+	for i := 0; i < 4; i++ {
+		go solutions.Task(TaskName, i, user_name, c)
 	}
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 4; i++ {
 		TaskID := <-c
 		fmt.Println("Выполнение задачи \"" + TaskName[TaskID] + "\" завершено.")
 	}
