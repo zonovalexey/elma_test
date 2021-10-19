@@ -23,7 +23,7 @@ func main() {
 
 	for i := 0; i < 4; i++ {
 		TaskID := <-c
-		fmt.Println("Выполнение задачи \"" + TaskName[TaskID] + "\" завершено.")
+		fmt.Println("Выполнение задачи \"" + TaskName[TaskID] + "\" завершено.\n")
 	}
 }
 

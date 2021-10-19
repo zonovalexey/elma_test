@@ -92,12 +92,16 @@ func Task(task_name []string, num int, user_name string, c chan int) {
 
 	res_server := connect.Send(b, task_name[num])
 
-	if int(res_server["percent"].(float64)) == 100 {
-		fmt.Println("Задача \""+task_name[num]+"\": решено", fmt.Sprint(int(res_server["percent"].(float64)))+"%")
+	if int(res_server.Percent) == 100 {
+		fmt.Println("Задача \""+task_name[num]+"\": решено", fmt.Sprint(res_server.Percent)+"%")
 	} else {
-		fmt.Println("Задача \""+task_name[num]+"\": решено", fmt.Sprint(int(res_server["percent"].(float64)))+"%\nИнформация об ошибке:")
-		for _, k := range res_server["fails"].([]interface{}) {
-			fmt.Println(k)
+		fmt.Println("Задача \""+task_name[num]+"\": решено", fmt.Sprint(res_server.Percent)+"%\nИнформация об ошибке:")
+		fmt.Println("-------------------------------------------")
+		for _, k := range res_server.Fails {
+			fmt.Println("Номер блока данных:", k.DataSet)
+			fmt.Println("Отправленный результат:", k.ExternalResult)
+			fmt.Println("Результат сервера:", k.OriginalResult)
+			fmt.Println("-------------------------------------------")
 		}
 	}
 

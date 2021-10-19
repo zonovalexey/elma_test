@@ -10,6 +10,15 @@ import (
 	"strings"
 )
 
+type res_struct struct {
+	Percent int `json:"percent"`
+	Fails   []struct {
+		OriginalResult string `json:"OriginalResult"`
+		ExternalResult string `json:"ExternalResult"`
+		DataSet        int    `json:"DataSet"`
+	} `json:"fails"`
+}
+
 func Connect(task string) []interface{} {
 
 	Tasks_path := "http://116.203.203.76:3000/tasks/" + strings.ReplaceAll(task, " ", "%20")
@@ -43,7 +52,7 @@ func Connect(task string) []interface{} {
 	return m
 }
 
-func Send(b []byte, task_name string) map[string]interface{} {
+func Send(b []byte, task_name string) res_struct { //map[string]interface{} {
 	r := bytes.NewReader([]byte(b))
 	resp, err := http.Post("http://116.203.203.76:3000/tasks/solution", "application/json", r)
 
@@ -63,15 +72,13 @@ func Send(b []byte, task_name string) map[string]interface{} {
 		log.Fatal(err)
 	}
 
-	var f interface{}
-	err = json.Unmarshal(body, &f)
+	var res res_struct
+	err = json.Unmarshal(body, &res)
 
 	if err != nil {
 		fmt.Println("Ошибка преобразования результатов решения задачи \"" + task_name + "\" в формат JSON")
 		log.Fatal(err)
 	}
 
-	m := f.(map[string]interface{})
-
-	return m
+	return res
 }
